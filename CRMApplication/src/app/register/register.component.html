@@ -1,0 +1,22 @@
+<p>register works!</p>
+<h3>Welcome to Register Page</h3>
+
+<div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+</div>
+
+<form #registerForm="ngForm" (ngSubmit)="RegisterSubmit(registerForm)">
+    <label for="username">UserName: </label>
+    <input id="username" type="text" ngModel name="username" /><br>
+
+    <label for="fullname">Full Name: </label>
+    <input id="fullname" type="text" ngModel name="fullname" /><br>
+
+    <label for="email">Email: </label>
+    <input id="email" type="email" ngModel name="email" /><br>
+
+    <label for="password">Password: </label>
+    <input id="password" type="password" ngModel name="password" /><br>
+
+    <input type="submit">
+</form>
