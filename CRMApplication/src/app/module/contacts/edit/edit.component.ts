@@ -9,7 +9,6 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.css'
 })
-
 export class EditComponent {
   constructor(private route: ActivatedRoute) { }
 
@@ -19,7 +18,7 @@ export class EditComponent {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!;
 
-    fetch(`http://localhost:8080/purchase_order/edit/${this.id}`, {
+    fetch(`http://localhost:8080/contacts/edit/${this.id}`, {
       method: 'GET',
       credentials: 'include'
     }).then(res => res.json())
@@ -30,12 +29,12 @@ export class EditComponent {
       .catch(err => console.log('failed'))
   }
 
-  PurchaseOrderEditSubmit(POrderEditForm:any) {
-    fetch('http://localhost:8080/purchase_order/update', {
+  ContactUpdateSubmit(ContactEditForm: any) {
+    fetch('http://localhost:8080/contacts/update', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(POrderEditForm.value)
+      body: JSON.stringify(ContactEditForm.value)
     }).then(res => res.json())
       .then(data => {
         console.log('update success', data)

@@ -1,0 +1,9 @@
+<p>view works!</p>
+<a href="/vendors/create">Create</a>
+
+<ul>
+    <li *ngFor="let item of vendors">
+        <a [routerLink]="['/vendors/edit', item.row_id]">{{ item.VendorName }}</a>
+        
+    </li>
+</ul>

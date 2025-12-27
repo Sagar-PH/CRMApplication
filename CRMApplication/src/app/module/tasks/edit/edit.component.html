@@ -1,0 +1,30 @@
+<p>edit works!</p>
+<p *ngIf="requested_data?.Description">{{ requested_data.Description }}</p>
+
+
+<form *ngIf="requested_data" #TaskEditForm="ngForm" (ngSubmit)="TaskEditSubmit(TaskEditForm)">
+    <input id="taskid" type="text" [(ngModel)]="requested_data.row_id" name="taskid" hidden/>
+
+    <label for="description">description: </label>
+    <input id="description" type="text" [(ngModel)]="requested_data.Description" name="description" />
+
+    <label for="component">component: </label>
+    <input id="component" type="text" [(ngModel)]="requested_data.Component" name="component" />
+
+    <label for="priority">priority: </label>
+    <input id="priority" type="text" [(ngModel)]="requested_data.Priority" name="priority" />
+
+    <label for="status">Status: </label>
+    <input id="status" type="text" [(ngModel)]="requested_data.Status" name="status" />
+
+    <label for="assignedto">Assigned To: </label>
+    <input id="assignedto" type="text" [(ngModel)]="requested_data.AssignedTo" name="assignedto" />
+
+    <label for="createdby">Created By: </label>
+    <input id="createdby" type="text" [(ngModel)]="requested_data.CreateBy" name="createdby" />
+
+    <label for="startdate">Start Date: </label>
+    <input id="startdate" type="date" [(ngModel)]="requested_data.StartDate" name="startdate" />
+
+    <input type="submit">
+</form>

@@ -1,1 +1,19 @@
 <p>edit works!</p>
+<p *ngIf="requested_data?.SupplierName">{{ requested_data.SupplierName }}</p>
+<form *ngIf="requested_data" #POrderEditForm="ngForm" (ngSubmit)="PurchaseOrderEditSubmit(POrderEditForm)">
+    <input id="orderid" type="text" [(ngModel)]="requested_data.row_id" name="orderid" hidden/>
+
+    <label for="supplierid">Supplier ID: </label>
+    <input id="supplierid" type="text" [(ngModel)]="requested_data.SupplierId" name="supplierid" />
+
+    <label for="date">Date: </label>
+    <input id="date" type="date" [(ngModel)]="requested_data.Date" name="date" />
+
+    <label for="currency">Currency: </label>
+    <input id="currency" type="number" [(ngModel)]="requested_data.Currency" name="currency" />
+
+    <label for="suppliername">Supplier Name: </label>
+    <input id="suppliername" type="text" [(ngModel)]="requested_data.SupplierName" name="suppliername" />
+
+    <input type="submit">
+</form>

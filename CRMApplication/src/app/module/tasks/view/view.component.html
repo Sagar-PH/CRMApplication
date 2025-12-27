@@ -1,0 +1,8 @@
+<p>view works!</p>
+<a href="/tasks/create">Create</a>
+
+<ul>
+    <li *ngFor="let item of tasks">
+        <a [routerLink]="['/tasks/edit', item.row_id]">{{ item.Description }}</a>
+    </li>
+</ul>

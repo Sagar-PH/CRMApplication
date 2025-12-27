@@ -1,0 +1,18 @@
+<div class="app-container">
+    <div class="main-content">
+        <h3>Navbar</h3>
+        <nav>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/salesorder/view">Sales Orders</a>
+            <a href="/purchaseorder/view">Purchase Orders</a>
+            <a href="/tasks/view">Tasks</a>
+            <a href="/contacts/view">Contacts</a>
+            <a href="/vendors/view">Vendors</a>
+            <button (click)="logout()">Logout</button>
+        </nav>
+
+        <main class="content-area">
+            <router-outlet />
+        </main>
+    </div>
+</div>

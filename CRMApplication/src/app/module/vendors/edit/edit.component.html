@@ -1,0 +1,30 @@
+<p>edit works!</p>
+
+<p *ngIf="requested_data">
+    {{ requested_data.VendorName }}
+</p>
+
+<form *ngIf="requested_data" #VendorEditForm="ngForm" (ngSubmit)="VendorUpdateSubmit(VendorEditForm)">
+
+    <input type="hidden" name="vendorid" [(ngModel)]="requested_data.row_id" />
+
+    <label>Vendor Name</label>
+    <input type="text" name="vendorname" [(ngModel)]="requested_data.VendorName" />
+
+    <label>Vendor Email</label>
+    <input type="email" name="vendoremail" [(ngModel)]="requested_data.VendorEmail" />
+
+    <label>Vendor Phone</label>
+    <input type="text" name="vendorphone" [(ngModel)]="requested_data.VendorPhone" />
+
+    <label>Category</label>
+    <input type="text" name="category" [(ngModel)]="requested_data.Category" />
+
+    <label>Status</label>
+    <input type="text" name="status" [(ngModel)]="requested_data.Status" />
+
+    <label>Website</label>
+    <input type="text" name="website" [(ngModel)]="requested_data.Website" />
+
+    <input type="submit" />
+</form>

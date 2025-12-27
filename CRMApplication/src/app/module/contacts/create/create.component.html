@@ -1,0 +1,25 @@
+<p>create works!</p>
+<form #ContactForm="ngForm" (ngSubmit)="ContactSubmit(ContactForm)">
+    <label for="contactid">Contact ID: </label>
+    <input id="contactid" type="text" ngModel name="contactid" />
+
+    <label for="firstname">First Name: </label>
+    <input id="firstname" type="text" ngModel name="firstname" />
+
+    <label for="lastname">Last Name: </label>
+    <input id="lastname" type="text" ngModel name="lastname" />
+
+    <label for="contacttype">Contact Type: </label>
+    <input id="contacttype" type="text" ngModel name="contacttype" />
+
+    <label for="status">Status: </label>
+    <input id="status" type="text" ngModel name="status" />
+
+    <label for="phone">Phone: </label>
+    <input id="phone" type="number" ngModel name="phone" />
+
+    <label for="website">Website: </label>
+    <input id="website" type="text" ngModel name="website" />
+
+    <input type="submit">
+</form>

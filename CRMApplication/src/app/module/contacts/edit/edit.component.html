@@ -1,0 +1,27 @@
+<p>edit works!</p>
+
+<p *ngIf="requested_data?.FirstName">{{ requested_data.FirstName }}</p>
+
+<form *ngIf="requested_data" #ContactEditForm="ngForm" (ngSubmit)="ContactUpdateSubmit(ContactEditForm)">
+    <input id="contactid" type="text" [(ngModel)]="requested_data.row_id" name="contactid" hidden/>
+
+    <label for="firstname">First Name: </label>
+    <input id="firstname" type="text" [(ngModel)]="requested_data.FirstName" name="firstname" />
+
+    <label for="lastname">Last Name: </label>
+    <input id="lastname" type="text" [(ngModel)]="requested_data.LastName" name="lastname" />
+
+    <label for="contacttype">Contact Type: </label>
+    <input id="contacttype" type="text" [(ngModel)]="requested_data.ContactType" name="contacttype" />
+
+    <label for="status">Status: </label>
+    <input id="status" type="text" [(ngModel)]="requested_data.Status" name="status" />
+
+    <label for="phone">Phone: </label>
+    <input id="phone" type="number" [(ngModel)]="requested_data.Phone" name="phone" />
+
+    <label for="website">Website: </label>
+    <input id="website" type="text" [(ngModel)]="requested_data.Website" name="website" />
+
+    <input type="submit">
+</form>

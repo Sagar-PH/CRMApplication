@@ -12,19 +12,4 @@ import { CommonModule } from '@angular/common';
 })
 
 export class DashboardComponent {
-  constructor(
-    private router: Router,
-    public authService: AuthService
-  ) {}
-
-  logout() {
-    fetch("http://localhost:8080/logout", {
-      method: "POST",
-      credentials: "include"
-    }).then(() => {
-      this.authService.setLoggedIn(false);
-      this.router.navigate(['/login']);
-    });
-  }
-
 }

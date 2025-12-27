@@ -1,0 +1,28 @@
+<p>create works!</p>
+<form #TaskForm="ngForm" (ngSubmit)="TaskSubmit(TaskForm)">
+    <label for="taskid">Task ID: </label>
+    <input id="taskid" type="text" ngModel name="taskid" />
+
+    <label for="description">description: </label>
+    <input id="description" type="text" ngModel name="description" />
+
+    <label for="component">component: </label>
+    <input id="component" type="text" ngModel name="component" />
+
+    <label for="priority">priority: </label>
+    <input id="priority" type="text" ngModel name="priority" />
+
+    <label for="status">Status: </label>
+    <input id="status" type="text" ngModel name="status" />
+
+    <label for="assignedto">Assigned To: </label>
+    <input id="assignedto" type="text" ngModel name="assignedto" />
+
+    <label for="createdby">Created By: </label>
+    <input id="createdby" type="text" ngModel name="createdby" />
+
+    <label for="startdate">Start Date: </label>
+    <input id="startdate" type="date" ngModel name="startdate" />
+
+    <input type="submit">
+</form>

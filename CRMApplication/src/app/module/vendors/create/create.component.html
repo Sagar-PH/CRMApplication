@@ -1,0 +1,25 @@
+<p>create works!</p>
+<form #VendorForm="ngForm" (ngSubmit)="VendorSubmit(VendorForm)">
+    <label for="vendorid">Vendor ID: </label>
+    <input id="vendorid" type="text" ngModel name="vendorid" />
+
+    <label for="vendorname">vendorname: </label>
+    <input id="vendorname" type="text" ngModel name="vendorname" />
+
+    <label for="vendoremail">vendoremail: </label>
+    <input id="vendoremail" type="email" ngModel name="vendoremail" />
+
+    <label for="vendorphone">vendorphone: </label>
+    <input id="vendorphone" type="phone" ngModel name="vendorphone" />
+
+    <label for="status">Status: </label>
+    <input id="status" type="text" ngModel name="status" />
+
+    <label for="category">category: </label>
+    <input id="category" type="text" ngModel name="category" />
+
+    <label for="website">Website: </label>
+    <input id="website" type="text" ngModel name="website" />
+
+    <input type="submit">
+</form>

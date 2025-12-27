@@ -1,7 +1,9 @@
 <p>view works!</p>
 
+<a href="/purchaseorder/create">Create</a>
 <ul>
     <li *ngFor="let item of purchase_orders">
-        {{ item.SupplierName }}
+        <a [routerLink]="['/purchaseorder/edit', item.row_id]">{{ item.SupplierName }}</a>
+        
     </li>
 </ul>

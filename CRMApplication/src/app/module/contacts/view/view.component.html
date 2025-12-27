@@ -1,0 +1,9 @@
+<p>view works!</p>
+<a href="/contacts/create">Create</a>
+
+<ul>
+    <li *ngFor="let item of contacts">
+        <a [routerLink]="['/contacts/edit', item.row_id]">{{ item.FirstName }}</a>
+        
+    </li>
+</ul>
