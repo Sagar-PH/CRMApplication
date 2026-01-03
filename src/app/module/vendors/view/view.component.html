@@ -1,9 +1,55 @@
-<p>view works!</p>
-<a href="/vendors/create">Create</a>
+<div class="vendor-view-page">
 
-<ul>
-    <li *ngFor="let item of vendors">
-        <a [routerLink]="['/vendors/edit', item.row_id]">{{ item.VendorName }}</a>
-        
-    </li>
-</ul>
+    <div class="page-header">
+        <h2>Vendors</h2>
+        <a routerLink="/vendors/create" class="btn-primary">
+            + Create Vendor
+        </a>
+    </div>
+
+    <div class="table-container" *ngIf="vendors?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Vendor ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let vendor of vendors">
+                    <td>{{ vendor.row_id }}</td>
+                    <td>{{ vendor.VendorName }}</td>
+                    <td>{{ vendor.VendorEmail }}</td>
+                    <td>{{ vendor.VendorPhone }}</td>
+                    <td>{{ vendor.Website }}</td>
+                    <td>
+                        <span class="status" [ngClass]="vendor.Status">{{ vendor.Status }}</span>
+                    </td>
+                    <td>
+                        <a class="link" [routerLink]="['/vendors/edit', vendor.row_id]">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No vendors found.</p>
+            <a routerLink="/vendors/create" class="btn-secondary">
+                Create your first vendor
+            </a>
+        </div>
+    </ng-template>
+
+</div>

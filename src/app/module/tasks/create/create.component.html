@@ -1,28 +1,69 @@
-<p>create works!</p>
-<form #TaskForm="ngForm" (ngSubmit)="TaskSubmit(TaskForm)">
-    <label for="taskid">Task ID: </label>
-    <input id="taskid" type="text" ngModel name="taskid" />
+<div class="task-page">
 
-    <label for="description">description: </label>
-    <input id="description" type="text" ngModel name="description" />
+    <div class="page-header">
+        <h2>Create Task</h2>
+    </div>
 
-    <label for="component">component: </label>
-    <input id="component" type="text" ngModel name="component" />
+    <form #taskForm="ngForm" (ngSubmit)="TaskSubmit(taskForm)" novalidate class="task-form">
 
-    <label for="priority">priority: </label>
-    <input id="priority" type="text" ngModel name="priority" />
+        <!-- Task Details -->
+        <h3 class="section-title">Task Details</h3>
 
-    <label for="status">Status: </label>
-    <input id="status" type="text" ngModel name="status" />
+        <div class="form-grid">
 
-    <label for="assignedto">Assigned To: </label>
-    <input id="assignedto" type="text" ngModel name="assignedto" />
+            <div class="form-group">
+                <label>Task Subject *</label>
+                <input type="text" name="subject" ngModel required placeholder="Enter task subject" />
+            </div>
 
-    <label for="createdby">Created By: </label>
-    <input id="createdby" type="text" ngModel name="createdby" />
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" ngModel placeholder="Enter task description"></textarea>
+            </div>
 
-    <label for="startdate">Start Date: </label>
-    <input id="startdate" type="date" ngModel name="startdate" />
+            <div class="form-group">
+                <label>Related To</label>
+                <select name="relatedType" ngModel>
+                    <option>Contact</option>
+                    <option>Vendor</option>
+                    <option>Sales Order</option>
+                    <option>Purchase Order</option>
+                </select>
+            </div>
 
-    <input type="submit">
-</form>
+            <div class="form-group">
+                <label>Related ID</label>
+                <input type="text" name="relatedId" ngModel placeholder="Enter related record ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Assigned To (User ID)</label>
+                <input type="text" name="assignedTo" ngModel placeholder="Enter assigned user ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Due Date</label>
+                <input type="date" name="dueDate" ngModel />
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" ngModel>
+                    <option>Planned</option>
+                    <option>Completed</option>
+                    <option>Cancelled</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="taskForm.invalid">
+                Save Task
+            </button>
+            <a routerLink="/tasks/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

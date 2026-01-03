@@ -1,8 +1,50 @@
-<p>view works!</p>
-<a href="/tasks/create">Create</a>
+<div class="task-view-page">
 
-<ul>
-    <li *ngFor="let item of tasks">
-        <a [routerLink]="['/tasks/edit', item.row_id]">{{ item.Description }}</a>
-    </li>
-</ul>
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Tasks</h2>
+        <a routerLink="/tasks/create" class="btn-primary">+ Create Task</a>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" *ngIf="tasks?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Subject</th>
+                    <th>Assigned To</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let task of tasks">
+                    <td>{{ task.row_id }}</td>
+                    <td>{{ task.Subject }}</td>
+                    <td>{{ task.AssignedTo }}</td>
+                    <td>{{ task.DueDate | date:'shortDate' }}</td>
+                    <td>
+                        <span class="status" [ngClass]="task.Status">{{ task.Status }}</span>
+                    </td>
+                    <td>
+                        <a [routerLink]="['/tasks/edit', task.row_id]" class="link">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Empty state -->
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No tasks found.</p>
+            <a routerLink="/tasks/create" class="btn-secondary">Create your first task</a>
+        </div>
+    </ng-template>
+
+</div>

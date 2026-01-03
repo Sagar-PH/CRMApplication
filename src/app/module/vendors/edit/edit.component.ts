@@ -24,12 +24,12 @@ export class EditComponent {
     }).then(res=> res.json())
     .then(data => {
       console.log('fetch success', data)
-      this.requested_data = data['order_found']
+      this.requested_data = data['vendor_found']
     })
     .catch(err => console.log('failed'))
   }
 
-  VendorUpdateSubmit(VendorEditForm:any) {
+  VendorEditSubmit(VendorEditForm:any) {
     fetch('http://localhost:8080/vendors/update', {
       method: 'POST',
       credentials: 'include',

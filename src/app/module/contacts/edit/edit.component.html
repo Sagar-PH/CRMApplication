@@ -1,27 +1,81 @@
-<p>edit works!</p>
+<div class="contact-edit-page" *ngIf="requested_data">
 
-<p *ngIf="requested_data?.FirstName">{{ requested_data.FirstName }}</p>
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Edit Contact</h2>
+        <span class="contact-id">Contact #{{ requested_data.row_id }}</span>
+    </div>
 
-<form *ngIf="requested_data" #ContactEditForm="ngForm" (ngSubmit)="ContactUpdateSubmit(ContactEditForm)">
-    <input id="contactid" type="text" [(ngModel)]="requested_data.row_id" name="contactid" hidden/>
+    <!-- Form -->
+    <form #ContactEditForm="ngForm" (ngSubmit)="ContactEditSubmit(ContactEditForm)" novalidate class="edit-form">
 
-    <label for="firstname">First Name: </label>
-    <input id="firstname" type="text" [(ngModel)]="requested_data.FirstName" name="firstname" />
+        <!-- Hidden ID -->
+        <input type="hidden" name="contactId" [(ngModel)]="requested_data.row_id" />
 
-    <label for="lastname">Last Name: </label>
-    <input id="lastname" type="text" [(ngModel)]="requested_data.LastName" name="lastname" />
+        <div class="form-grid">
 
-    <label for="contacttype">Contact Type: </label>
-    <input id="contacttype" type="text" [(ngModel)]="requested_data.ContactType" name="contacttype" />
+            <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" name="firstName" [(ngModel)]="requested_data.FirstName" required
+                    placeholder="Enter first name" />
+            </div>
 
-    <label for="status">Status: </label>
-    <input id="status" type="text" [(ngModel)]="requested_data.Status" name="status" />
+            <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" name="lastName" [(ngModel)]="requested_data.LastName" required
+                    placeholder="Enter last name" />
+            </div>
 
-    <label for="phone">Phone: </label>
-    <input id="phone" type="number" [(ngModel)]="requested_data.Phone" name="phone" />
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" [(ngModel)]="requested_data.Email" placeholder="Enter email" />
+            </div>
 
-    <label for="website">Website: </label>
-    <input id="website" type="text" [(ngModel)]="requested_data.Website" name="website" />
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" name="phone" [(ngModel)]="requested_data.Phone" placeholder="Enter phone number" />
+            </div>
 
-    <input type="submit">
-</form>
+            <div class="form-group">
+                <label>Mobile</label>
+                <input type="tel" name="mobile" [(ngModel)]="requested_data.Mobile" placeholder="Enter mobile number" />
+            </div>
+
+            <div class="form-group">
+                <label>Designation</label>
+                <input type="text" name="designation" [(ngModel)]="requested_data.Designation"
+                    placeholder="Enter designation" />
+            </div>
+
+            <div class="form-group">
+                <label>Department</label>
+                <input type="text" name="department" [(ngModel)]="requested_data.Department"
+                    placeholder="Enter department" />
+            </div>
+
+            <div class="form-group">
+                <label>Account / Vendor ID</label>
+                <input type="text" name="accountId" [(ngModel)]="requested_data.AccountId"
+                    placeholder="Enter account/vendor ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" [(ngModel)]="requested_data.Status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="ContactEditForm.invalid">
+                Save Changes
+            </button>
+            <a routerLink="/contacts/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

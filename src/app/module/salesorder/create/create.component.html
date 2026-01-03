@@ -1,19 +1,82 @@
-<p>create works!</p>
-<form #SOrderForm="ngForm" (ngSubmit)="SalesOrderSubmit(SOrderForm)">
-    <label for="orderid">Order ID: </label>
-    <input id="orderid" type="text" ngModel name="orderid" />
+<div class="so-page">
 
-    <label for="vendorid">Vendor ID: </label>
-    <input id="vendorid" type="text" ngModel name="vendorid" />
+    <div class="page-header">
+        <h2>Create Sales Order</h2>
+    </div>
 
-    <label for="date">Date: </label>
-    <input id="date" type="date" ngModel name="date" />
+    <form #salesOrderForm="ngForm" (ngSubmit)="SalesOrderSubmit(salesOrderForm)" novalidate class="so-form">
 
-    <label for="currency">Currency: </label>
-    <input id="currency" type="number" ngModel name="currency" />
+        <!-- Order Details -->
+        <h3 class="section-title">Order Details</h3>
 
-    <label for="vendorname">Vendor Name: </label>
-    <input id="vendorname" type="text" ngModel name="vendorname" />
+        <div class="form-grid">
 
-    <input type="submit">
-</form>
+            <div class="form-group">
+                <label>Customer Account ID *</label>
+                <input type="text" name="accountId" ngModel required placeholder="Enter customer account ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Contact ID</label>
+                <input type="text" name="contactId" ngModel placeholder="Enter contact ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Order Date</label>
+                <input type="date" name="orderDate" ngModel />
+            </div>
+
+            <div class="form-group">
+                <label>Expected Delivery</label>
+                <input type="date" name="deliveryDate" ngModel />
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" ngModel>
+                    <option value="Draft">Draft</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Order Item -->
+        <h3 class="section-title">Order Item</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Product ID</label>
+                <input type="text" name="productId" ngModel placeholder="Enter product ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" ngModel min="1" />
+            </div>
+
+            <div class="form-group">
+                <label>Unit Price</label>
+                <input type="number" name="unitPrice" ngModel min="0" />
+            </div>
+
+            <div class="form-group">
+                <label>Total Amount</label>
+                <input type="number" name="totalAmount" ngModel min="0" />
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="salesOrderForm.invalid">
+                Save Sales Order
+            </button>
+            <a routerLink="/salesorder/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

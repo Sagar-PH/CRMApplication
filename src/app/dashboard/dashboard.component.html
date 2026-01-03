@@ -1,1 +1,52 @@
-<h1>Welcome To Dashboard</h1>
+<div class="dashboard">
+
+    <h1 class="dashboard-title">Welcome to Dashboard</h1>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <h3>Total Sales Orders</h3>
+            <p class="kpi-value">{{ sales_count }}</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Total Purchase Orders</h3>
+            <p class="kpi-value">{{ purchase_count }}</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Open Tasks</h3>
+            <p class="kpi-value">{{ tasks_count }}</p>
+        </div>
+
+        <div class="kpi-card">
+            <h3>Active Contacts</h3>
+            <p class="kpi-value">{{ contacts_count }}</p>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+
+        <div class="action-buttons">
+            <a href="/salesorder/create">+ New Sales Order</a>
+            <a href="/purchaseorder/create">+ New Purchase Order</a>
+            <a href="/tasks/create">+ New Task</a>
+            <a href="/contacts/create">+ New Contact</a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+        <h2>Recent Activity</h2>
+
+        <ul>
+            <li>Sales Order #SO-1023 created</li>
+            <li>Purchase Order #PO-554 approved</li>
+            <li>Task "Follow up with vendor" completed</li>
+            <li>New contact added: John Doe</li>
+        </ul>
+    </div>
+
+</div>

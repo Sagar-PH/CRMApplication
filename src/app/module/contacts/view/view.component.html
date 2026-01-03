@@ -1,9 +1,55 @@
-<p>view works!</p>
-<a href="/contacts/create">Create</a>
+<div class="contact-view-page">
 
-<ul>
-    <li *ngFor="let item of contacts">
-        <a [routerLink]="['/contacts/edit', item.row_id]">{{ item.FirstName }}</a>
-        
-    </li>
-</ul>
+    <div class="page-header">
+        <h2>Contacts</h2>
+        <a routerLink="/contacts/create" class="btn-primary">
+            + Create Contact
+        </a>
+    </div>
+
+    <div class="table-container" *ngIf="contacts?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Contact ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let contact of contacts">
+                    <td>{{ contact.row_id }}</td>
+                    <td>{{ contact.FirstName }}</td>
+                    <td>{{ contact.LastName }}</td>
+                    <td>{{ contact.Email }}</td>
+                    <td>{{ contact.Mobile }}</td>
+                    <td>
+                        <span class="status" [ngClass]="contact.Status">{{ contact.Status }}</span>
+                    </td>
+                    <td>
+                        <a class="link" [routerLink]="['/contacts/edit', contact.row_id]">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No contacts found.</p>
+            <a routerLink="/contacts/create" class="btn-secondary">
+                Create your first contact
+            </a>
+        </div>
+    </ng-template>
+
+</div>

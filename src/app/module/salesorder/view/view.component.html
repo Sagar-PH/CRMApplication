@@ -1,9 +1,51 @@
-<p>view works!</p>
-<a href="/salesorder/create">Create</a>
+<div class="so-view-page">
 
-<ul>
-    <li *ngFor="let item of sales_orders">
-        <a [routerLink]="['/salesorder/edit', item.row_id]">{{ item.VendorName }}</a>
-        
-    </li>
-</ul>
+    <div class="page-header">
+        <h2>Sales Orders</h2>
+        <a routerLink="/salesorder/create" class="btn-primary">+ Create Sales Order</a>
+    </div>
+
+    <div class="table-container" *ngIf="sales_orders?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>SO ID</th>
+                    <th>Customer Account</th>
+                    <th>Contact</th>
+                    <th>Order Date</th>
+                    <th>Expected Delivery</th>
+                    <th>Status</th>
+                    <th>Total Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let order of sales_orders">
+                    <td>{{ order.row_id }}</td>
+                    <td>{{ order.AccountId }}</td>
+                    <td>{{ order.ContactId }}</td>
+                    <td>{{ order.OrderDate | date:'shortDate' }}</td>
+                    <td>{{ order.ExpectedDelivery | date:'shortDate' }}</td>
+                    <td>
+                        <span class="status" [ngClass]="order.Status">{{ order.Status }}</span>
+                    </td>
+                    <td>{{ order.TotalAmount | currency }}</td>
+                    <td>
+                        <a [routerLink]="['/salesorder/edit', order.row_id]" class="link">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No sales orders found.</p>
+            <a routerLink="/salesorder/create" class="btn-secondary">Create your first sales order</a>
+        </div>
+    </ng-template>
+
+</div>

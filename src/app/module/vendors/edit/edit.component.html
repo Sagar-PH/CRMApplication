@@ -1,30 +1,76 @@
-<p>edit works!</p>
+<div class="vendor-page" *ngIf="requested_data">
 
-<p *ngIf="requested_data">
-    {{ requested_data.VendorName }}
-</p>
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Edit Vendor</h2>
+        <span class="vendor-id">Vendor #{{ requested_data.row_id }}</span>
+    </div>
 
-<form *ngIf="requested_data" #VendorEditForm="ngForm" (ngSubmit)="VendorUpdateSubmit(VendorEditForm)">
+    <!-- Form -->
+    <form #VendorEditForm="ngForm" (ngSubmit)="VendorEditSubmit(VendorEditForm)" novalidate class="vendor-form">
 
-    <input type="hidden" name="vendorid" [(ngModel)]="requested_data.row_id" />
+        <!-- Hidden ID -->
+        <input type="hidden" name="vendorId" [(ngModel)]="requested_data.row_id" />
 
-    <label>Vendor Name</label>
-    <input type="text" name="vendorname" [(ngModel)]="requested_data.VendorName" />
+        <!-- Vendor Details Section -->
+        <h3 class="section-title">Vendor Details</h3>
 
-    <label>Vendor Email</label>
-    <input type="email" name="vendoremail" [(ngModel)]="requested_data.VendorEmail" />
+        <div class="form-grid">
 
-    <label>Vendor Phone</label>
-    <input type="text" name="vendorphone" [(ngModel)]="requested_data.VendorPhone" />
+            <div class="form-group">
+                <label>Vendor Name *</label>
+                <input type="text" name="vendorName" [(ngModel)]="requested_data.VendorName" required
+                    placeholder="Enter vendor name" />
+            </div>
 
-    <label>Category</label>
-    <input type="text" name="category" [(ngModel)]="requested_data.Category" />
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" [(ngModel)]="requested_data.VendorEmail" placeholder="Enter email" />
+            </div>
 
-    <label>Status</label>
-    <input type="text" name="status" [(ngModel)]="requested_data.Status" />
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" name="phone" [(ngModel)]="requested_data.VendorPhone" placeholder="Enter phone number" />
+            </div>
 
-    <label>Website</label>
-    <input type="text" name="website" [(ngModel)]="requested_data.Website" />
+            <div class="form-group">
+                <label>Website</label>
+                <input type="text" name="website" [(ngModel)]="requested_data.Website"
+                    placeholder="Enter website URL" />
+            </div>
 
-    <input type="submit" />
-</form>
+            <div class="form-group">
+                <label>Tax ID / GST</label>
+                <input type="text" name="taxId" [(ngModel)]="requested_data.TaxId" placeholder="Enter Tax ID / GST" />
+            </div>
+
+            <div class="form-group">
+                <label>Payment Terms</label>
+                <select name="paymentTerms" [(ngModel)]="requested_data.PaymentTerms">
+                    <option>Net 15</option>
+                    <option>Net 30</option>
+                    <option>Net 45</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" [(ngModel)]="requested_data.Status">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Blacklisted</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="VendorEditForm.invalid">
+                Save Changes
+            </button>
+            <a routerLink="/vendors/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

@@ -17,8 +17,8 @@ export class ViewComponent {
       credentials: 'include'
     }).then(res => res.json())
       .then(data => {
-        this.tasks = data['orders_request']
-        console.log('sales order View', data['orders_request'])
+        this.tasks = data['tasks_request']
+        console.log('sales order View', data['tasks_request'])
       })
       .catch(err => console.log('Order Submit Failed'))
   }

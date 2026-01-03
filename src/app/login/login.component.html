@@ -1,24 +1,35 @@
-<ng-container>
+<div class="login-page">
 
-  <h3>Welcome to Login Page</h3>
+  <div class="login-card">
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to your CRM account</p>
 
-  <div *ngIf="errorMessage" class="error" role="alert">
-    {{ errorMessage }}
+    <div *ngIf="errorMessage" class="error" role="alert">
+      {{ errorMessage }}
+    </div>
+
+    <form #loginForm="ngForm" (ngSubmit)="LoginSubmit(loginForm)" novalidate>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" ngModel required placeholder="Enter username" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" ngModel required placeholder="Enter password" />
+      </div>
+
+      <button type="submit" class="btn-login">
+        Login
+      </button>
+
+    </form>
+
+    <div class="footer-links">
+      <a href="/register">Create Account</a>
+      <a routerLink="/forgot-password">Forgot Password?</a>
+    </div>
   </div>
 
-  <form #loginForm="ngForm" (ngSubmit)="LoginSubmit(loginForm)" novalidate>
-
-    <div>
-      <label for="username">Username</label>
-      <input id="username" type="text" name="username" ngModel required />
-    </div>
-
-    <div>
-      <label for="password">Password</label>
-      <input id="password" type="password" name="password" ngModel required />
-    </div>
-
-    <button type="submit">Login</button>
-
-  </form>
-</ng-container>
+</div>

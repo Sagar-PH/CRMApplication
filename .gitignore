@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 
 /crm_server/node_modules
+/.vscode

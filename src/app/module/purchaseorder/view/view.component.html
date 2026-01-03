@@ -1,9 +1,52 @@
-<p>view works!</p>
+<div class="po-view-page">
 
-<a href="/purchaseorder/create">Create</a>
-<ul>
-    <li *ngFor="let item of purchase_orders">
-        <a [routerLink]="['/purchaseorder/edit', item.row_id]">{{ item.SupplierName }}</a>
-        
-    </li>
-</ul>
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Purchase Orders</h2>
+        <a routerLink="/purchaseorder/create" class="btn-primary">+ Create Purchase Order</a>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" *ngIf="purchase_orders?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>PO ID</th>
+                    <th>Vendor Name</th>
+                    <th>Order Date</th>
+                    <th>Expected Delivery</th>
+                    <th>Status</th>
+                    <th>Total Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let po of purchase_orders">
+                    <td>{{ po.row_id }}</td>
+                    <td>{{ po.VendorName }}</td>
+                    <td>{{ po.OrderDate | date:'shortDate' }}</td>
+                    <td>{{ po.ExpectedDelivery | date:'shortDate' }}</td>
+                    <td>
+                        <span class="status" [ngClass]="po.Status">{{ po.Status }}</span>
+                    </td>
+                    <td>{{ po.TotalAmount | currency }}</td>
+                    <td>
+                        <a [routerLink]="['/purchaseorder/edit', po.row_id]" class="link">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Empty state -->
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No purchase orders found.</p>
+            <a routerLink="/purchaseorder/create" class="btn-secondary">Create your first purchase order</a>
+        </div>
+    </ng-template>
+
+</div>

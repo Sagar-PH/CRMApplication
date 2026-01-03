@@ -12,6 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 
 export class DashboardComponent {
+  sales_count: Number = 0;
+  purchase_count: Number = 0;
+  tasks_count: Number = 0;
+  contacts_count: Number = 0;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -20,6 +25,21 @@ export class DashboardComponent {
       if (!isLoggedIn) {
         this.router.navigateByUrl('/login');
       }
+    })
+  }
+
+  ngOnInit() {
+    fetch('http://localhost:8080/dashboard', {
+      method: 'GET',
+      credentials: 'include'
+    }).then(res => res.json())
+    .then(data => {
+      console.log(data)
+      this.sales_count = data['sales'].length
+      this.purchase_count = data['purchase'].length
+      this.tasks_count = data['tasks'].length
+      this.contacts_count = data['contacts'].length
+
     })
   }
 }

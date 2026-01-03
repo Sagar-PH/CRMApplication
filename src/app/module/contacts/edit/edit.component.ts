@@ -24,12 +24,12 @@ export class EditComponent {
     }).then(res => res.json())
       .then(data => {
         console.log('fetch success', data)
-        this.requested_data = data['order_found']
+        this.requested_data = data['contact_found']
       })
       .catch(err => console.log('failed'))
   }
 
-  ContactUpdateSubmit(ContactEditForm: any) {
+  ContactEditSubmit(ContactEditForm: any) {
     fetch('http://localhost:8080/contacts/update', {
       method: 'POST',
       credentials: 'include',

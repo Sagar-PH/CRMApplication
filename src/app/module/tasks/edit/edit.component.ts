@@ -24,7 +24,7 @@ export class EditComponent {
     }).then(res=> res.json())
     .then(data => {
       console.log('fetch success', data)
-      this.requested_data = data['order_found']
+      this.requested_data = data['task_found']
     })
     .catch(err => console.log('failed'))
   }

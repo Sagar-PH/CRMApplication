@@ -1,19 +1,91 @@
-<p>edit works!</p>
-<p *ngIf="requested_data?.SupplierName">{{ requested_data.SupplierName }}</p>
-<form *ngIf="requested_data" #POrderEditForm="ngForm" (ngSubmit)="PurchaseOrderEditSubmit(POrderEditForm)">
-    <input id="orderid" type="text" [(ngModel)]="requested_data.row_id" name="orderid" hidden/>
+<div class="po-edit-page" *ngIf="requested_data">
 
-    <label for="supplierid">Supplier ID: </label>
-    <input id="supplierid" type="text" [(ngModel)]="requested_data.SupplierId" name="supplierid" />
+    <!-- Header -->
+    <div class="page-header">
+        <h2>Edit Purchase Order</h2>
+        <span class="po-id">PO #{{ requested_data.row_id }}</span>
+    </div>
 
-    <label for="date">Date: </label>
-    <input id="date" type="date" [(ngModel)]="requested_data.Date" name="date" />
+    <!-- Form -->
+    <form #POrderEditForm="ngForm" (ngSubmit)="PurchaseOrderEditSubmit(POrderEditForm)" novalidate class="po-form">
 
-    <label for="currency">Currency: </label>
-    <input id="currency" type="number" [(ngModel)]="requested_data.Currency" name="currency" />
+        <!-- Hidden ID -->
+        <input type="hidden" name="orderId" [(ngModel)]="requested_data.row_id" />
 
-    <label for="suppliername">Supplier Name: </label>
-    <input id="suppliername" type="text" [(ngModel)]="requested_data.SupplierName" name="suppliername" />
+        <!-- Order Details -->
+        <h3 class="section-title">Order Details</h3>
 
-    <input type="submit">
-</form>
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Vendor ID *</label>
+                <input type="text" name="vendorId" [(ngModel)]="requested_data.VendorId" required
+                    placeholder="Enter vendor ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Vendor Name *</label>
+                <input type="text" name="vendorName" [(ngModel)]="requested_data.VendorName" required
+                    placeholder="Enter vendor Name" />
+            </div>
+
+            <div class="form-group">
+                <label>Order Date</label>
+                <input type="date" name="orderDate" [(ngModel)]="requested_data.OrderDate" />
+            </div>
+
+            <div class="form-group">
+                <label>Expected Delivery</label>
+                <input type="date" name="deliveryDate" [(ngModel)]="requested_data.DeliveryDate" />
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" [(ngModel)]="requested_data.Status">
+                    <option value="Created">Created</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Received">Received</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Item Details -->
+        <h3 class="section-title">Item Details</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Product ID</label>
+                <input type="text" name="productId" [(ngModel)]="requested_data.ProductId"
+                    placeholder="Enter product ID" />
+            </div>
+
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" [(ngModel)]="requested_data.Quantity" min="1" />
+            </div>
+
+            <div class="form-group">
+                <label>Unit Cost</label>
+                <input type="number" name="unitCost" [(ngModel)]="requested_data.UnitCost" min="0" />
+            </div>
+
+            <div class="form-group">
+                <label>Total Amount</label>
+                <input type="number" name="totalAmount" [(ngModel)]="requested_data.TotalAmount" min="0" />
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="POrderEditForm.invalid">
+                Save Changes
+            </button>
+            <a routerLink="/purchaseorder/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

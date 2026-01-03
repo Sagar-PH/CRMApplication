@@ -1,25 +1,68 @@
-<p>create works!</p>
-<form #VendorForm="ngForm" (ngSubmit)="VendorSubmit(VendorForm)">
-    <label for="vendorid">Vendor ID: </label>
-    <input id="vendorid" type="text" ngModel name="vendorid" />
+<div class="vendor-page">
 
-    <label for="vendorname">vendorname: </label>
-    <input id="vendorname" type="text" ngModel name="vendorname" />
+    <div class="page-header">
+        <h2>Create Vendor</h2>
+    </div>
 
-    <label for="vendoremail">vendoremail: </label>
-    <input id="vendoremail" type="email" ngModel name="vendoremail" />
+    <form #vendorForm="ngForm" (ngSubmit)="VendorSubmit(vendorForm)" novalidate class="vendor-form">
 
-    <label for="vendorphone">vendorphone: </label>
-    <input id="vendorphone" type="phone" ngModel name="vendorphone" />
+        <!-- Vendor Details Section -->
+        <h3 class="section-title">Vendor Details</h3>
 
-    <label for="status">Status: </label>
-    <input id="status" type="text" ngModel name="status" />
+        <div class="form-grid">
 
-    <label for="category">category: </label>
-    <input id="category" type="text" ngModel name="category" />
+            <div class="form-group">
+                <label>Vendor Name *</label>
+                <input type="text" name="vendorName" ngModel required placeholder="Enter vendor name" />
+            </div>
 
-    <label for="website">Website: </label>
-    <input id="website" type="text" ngModel name="website" />
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" ngModel placeholder="Enter email" />
+            </div>
 
-    <input type="submit">
-</form>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" name="phone" ngModel placeholder="Enter phone number" />
+            </div>
+
+            <div class="form-group">
+                <label>Website</label>
+                <input type="text" name="website" ngModel placeholder="Enter website URL" />
+            </div>
+
+            <div class="form-group">
+                <label>Tax ID / GST</label>
+                <input type="text" name="taxId" ngModel placeholder="Enter Tax ID / GST" />
+            </div>
+
+            <div class="form-group">
+                <label>Payment Terms</label>
+                <select name="paymentTerms" ngModel>
+                    <option>Net 15</option>
+                    <option>Net 30</option>
+                    <option>Net 45</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" ngModel>
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Blacklisted</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="vendorForm.invalid">
+                Save Vendor
+            </button>
+            <a routerLink="/vendors/view" class="btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>

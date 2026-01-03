@@ -1,18 +1,35 @@
 <div class="app-container">
-    <div class="main-content">
-        <h3>Navbar</h3>
-        <nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span>MyCRM</span>
+        </div>
+
+        <nav class="nav-menu">
             <a href="/dashboard">Dashboard</a>
             <a href="/salesorder/view">Sales Orders</a>
             <a href="/purchaseorder/view">Purchase Orders</a>
             <a href="/tasks/view">Tasks</a>
             <a href="/contacts/view">Contacts</a>
             <a href="/vendors/view">Vendors</a>
-            <button (click)="logout()">Logout</button>
         </nav>
 
+        <button class="logout-btn" (click)="logout()">Logout</button>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Top Navbar -->
+        <header class="topbar">
+            <h3>CRM Dashboard</h3>
+        </header>
+
+        <!-- Routed Page -->
         <main class="content-area">
-            <router-outlet />
+            <router-outlet></router-outlet>
         </main>
+
     </div>
 </div>
