@@ -51,7 +51,7 @@ const client = new MongoClient(url, {
     }
 });
 
-const collections = ['Contacts', 'Tasks', 'PurchaseOrders', 'SalesOrders', 'Vendors']
+const collections = ['Contacts', 'Tasks', 'PurchaseOrders', 'SalesOrders', 'Vendors', 'Products']
 
 express_app.post('/login', async (req, res) => {
     console.log('login requested..', req.body)
@@ -410,6 +410,78 @@ express_app.get('/dashboard', async (req, res) => {
         vendors: vendors
     });
 })
+
+
+//Product page
+express_app.post('/products/create', async (req, res) => {
+    try {
+        const product_col = user_database.collection('Products');
+        const product_row_id = await getNextRowId(product_col);
+
+        const product = {
+            row_id: product_row_id,
+            Name: req.body['name'],
+            SKU: req.body['sku'],
+            CategoryId: req.body['categoryId'],
+            CategoryName: req.body['categoryName'],
+            Unit: req.body['unit'],
+            Price: req.body['price'],
+            Stock: req.body['stock'],
+            Description: req.body['description'],
+            ImageUrl: req.body['imageUrl'],
+            CreatedAt: new Date(),
+            UpdatedAt: new Date()
+        };
+
+        const insert_status = await insertToCollection(product_col, product);
+        return res.send({ status: insert_status ? 'inserted' : 'insert failed', product });
+    } catch (err) {
+        console.error('Error creating product:', err);
+        return res.status(500).send({ status: 'error', message: err.message });
+    }
+});
+
+// Get all products
+express_app.get('/products/view', async (req, res) => {
+    const all_products = await user_database.collection('Products').find().toArray();
+    return res.send({ products_request: all_products });
+});
+
+// Get single product by row_id
+express_app.get('/products/edit/:id', async (req, res) => {
+    try {
+        const product_col = user_database.collection('Products');
+        const row_id = parseInt(req.params.id, 10);
+
+        const product = await product_col.findOne({ row_id });
+        if (!product) return res.status(404).send({ status: 'not found' });
+
+        return res.send({ status: 'success', product_found: product });
+    } catch (err) {
+        console.error('Error fetching product:', err);
+        return res.status(500).send({ status: 'error', message: err.message });
+    }
+});
+
+express_app.post('/products/update', async (req, res) => {
+    const product_collection = user_database.collection('Products');
+    const update_id = { row_id: req.body['productId'] };
+
+    const product = {
+        Name: req.body['name'],
+        SKU: req.body['sku'],
+        CategoryId: req.body['categoryId'],
+        CategoryName: req.body['categoryName'],
+        Unit: req.body['unit'],
+        Price: req.body['price'],
+        Stock: req.body['stock'],
+        Description: req.body['description'],
+    };
+
+    console.log(product)
+    await updateCollection(product_collection, update_id, product);
+    return res.send({ product_update: 'success' });
+});
 
 async function connectDB() {
     try {

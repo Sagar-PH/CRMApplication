@@ -1,0 +1,56 @@
+<div class="product-view-page">
+
+    <div class="page-header">
+        <h2>Products</h2>
+        <a routerLink="/products/create" class="btn-primary">
+            + Create Product
+        </a>
+    </div>
+
+    <div class="table-container" *ngIf="products?.length; else emptyState">
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>SKU</th>
+                    <th>Category</th>
+                    <th>Unit</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td>{{ product.row_id }}</td>
+                    <td>{{ product.Name }}</td>
+                    <td>{{ product.SKU }}</td>
+                    <td>{{ product.CategoryName }}</td>
+                    <td>{{ product.Unit }}</td>
+                    <td>{{ product.Price | currency }}</td>
+                    <td>{{ product.Stock }}</td>
+                    <td class="actions">
+                        <a class="link" [routerLink]="['/products/edit', product.row_id]">Edit</a>
+                        <!-- <button class="btn btn-sm btn-danger" (click)="deleteProduct(product)">Delete</button> -->
+                    </td>
+                </tr>
+                <tr *ngIf="products.length === 0">
+                    <td colspan="9" class="text-center">No products found.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <ng-template #emptyState>
+        <div class="empty-state">
+            <p>No products found.</p>
+            <a routerLink="/products/create" class="btn-secondary">
+                Create your first Product
+            </a>
+        </div>
+    </ng-template>
+
+</div>
