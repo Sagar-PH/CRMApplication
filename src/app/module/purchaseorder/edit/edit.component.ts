@@ -56,10 +56,7 @@ export class EditComponent implements OnInit {
         this.selectedVendor = this.vendors_list.find(
           p => p.row_id === this.requested_data.VendorId
         );
-
-        console.log('SV:: ', this.requested_data)
       }
-
     } catch (error) {
       console.error('Initialization failed:', error);
     }
@@ -67,8 +64,6 @@ export class EditComponent implements OnInit {
 
   async PurchaseOrderEditSubmit(form: NgForm) {
     if (form.invalid) return;
-
-    console.log(form.value)
 
     try {
       const res = await fetch('http://localhost:8080/purchase_order/update', {
@@ -109,8 +104,6 @@ export class EditComponent implements OnInit {
   vendorChange(vendor:any, form:NgForm) {
     const sel_vendor = form.form.value.selectedVendor;
     if(!sel_vendor) return;
-
-    console.log(form.form)
 
     form.form.patchValue({
       vendorId: vendor.row_id,

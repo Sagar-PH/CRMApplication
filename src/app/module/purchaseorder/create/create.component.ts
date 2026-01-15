@@ -28,8 +28,6 @@ export class CreateComponent {
       const products_data = await products.json()
       const vendors_data = await vendors.json()
 
-      console.log(vendors_data)
-
       this.products_list = products_data.products_request || [];
       this.vendors_list = vendors_data.vendors_request || [];
     } catch (error) {
@@ -72,7 +70,6 @@ export class CreateComponent {
   }
 
   selectedVendorChange(vendor:any, purchaseOrderForm: NgForm) {
-    console.log('vid:: ', vendor, purchaseOrderForm.form.value)
     purchaseOrderForm.form.patchValue({
       vendorId: vendor.row_id,
       vendorName: vendor.VendorName
