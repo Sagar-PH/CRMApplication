@@ -11,8 +11,8 @@
             <thead>
                 <tr>
                     <th>SO ID</th>
-                    <th>Customer Account</th>
-                    <th>Contact</th>
+                    <!-- <th>Customer Account</th> -->
+                    <th>Customer Name</th>
                     <th>Order Date</th>
                     <th>Expected Delivery</th>
                     <th>Status</th>
@@ -24,8 +24,8 @@
             <tbody>
                 <tr *ngFor="let order of sales_orders">
                     <td>{{ order.row_id }}</td>
-                    <td>{{ order.AccountId }}</td>
-                    <td>{{ order.ContactId }}</td>
+                    <!-- <td>{{ order.CustomerId }}</td> -->
+                    <td>{{ order.CustomerName }}</td>
                     <td>{{ order.OrderDate | date:'shortDate' }}</td>
                     <td>{{ order.ExpectedDelivery | date:'shortDate' }}</td>
                     <td>

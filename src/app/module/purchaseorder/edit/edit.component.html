@@ -21,7 +21,7 @@
                 <input type="text" name="vendorId" [(ngModel)]="requested_data.VendorId" ngModel hidden/>
 
                 <label>Vendor ID *</label>
-                <select name="selectedVendor" [(ngModel)]="selectedVendor" (ngModelChange)="vendorChange($event, POrderEditForm)">
+                <select name="selectedVendor" [(ngModel)]="selectedVendor" (ngModelChange)="vendorIdChange($event, POrderEditForm)">
                     <option *ngFor="let vendor of vendors_list" [ngValue]="vendor">{{vendor.row_id}}</option>
                 </select>
                 <!-- <input type="text" name="vendorId" [(ngModel)]="requested_data.VendorId" required

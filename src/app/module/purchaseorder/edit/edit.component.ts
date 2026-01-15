@@ -101,7 +101,7 @@ export class EditComponent implements OnInit {
     });
   }
 
-  vendorChange(vendor:any, form:NgForm) {
+  vendorIdChange(vendor:any, form:NgForm) {
     const sel_vendor = form.form.value.selectedVendor;
     if(!sel_vendor) return;
 

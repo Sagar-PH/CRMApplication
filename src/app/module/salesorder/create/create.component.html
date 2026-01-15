@@ -12,14 +12,23 @@
         <div class="form-grid">
 
             <div class="form-group">
-                <label>Customer Account ID *</label>
-                <input type="text" name="accountId" ngModel required placeholder="Enter customer account ID" />
+                <input type="text" name="customerId" ngModel required hidden/>
+
+                <label>Customer customer ID *</label>
+                <select name="selectedCustomer" ngModel (ngModelChange)="selectedCustomerChange($event, salesOrderForm)">
+                    <option *ngFor="let customer of customers_list" [ngValue]="customer">{{customer.row_id}}</option>
+                </select>
             </div>
 
             <div class="form-group">
+                <label>Customer Name *</label>
+                <input type="text" name="customerName" ngModel required placeholder="Enter customer Name" />
+            </div>
+
+            <!-- <div class="form-group">
                 <label>Contact ID</label>
                 <input type="text" name="contactId" ngModel placeholder="Enter contact ID" />
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label>Order Date</label>

@@ -16,6 +16,8 @@ export class EditComponent implements OnInit {
   requested_data: any = null;
   products_list: any[] = [];
   selectedProduct: any = null;
+  customers_list: any[] = [];
+  selectedCustomer: any = null;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -23,7 +25,7 @@ export class EditComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     try {
-      const [productsRes, orderRes] = await Promise.all([
+      const [productsRes, orderRes, customersRes] = await Promise.all([
         fetch('http://localhost:8080/products/view', {
           method: 'GET',
           credentials: 'include'
@@ -31,18 +33,28 @@ export class EditComponent implements OnInit {
         fetch(`http://localhost:8080/sales_order/edit/${this.id}`, {
           method: 'GET',
           credentials: 'include'
-        })
+        }),
+        fetch('http://localhost:8080/customers/view', {
+          method: 'GET',
+          credentials: 'include'
+        }),
       ]);
 
       const productsData = await productsRes.json();
       const orderData = await orderRes.json();
+      const customersData = await customersRes.json();
 
       this.products_list = productsData.products_request || [];
+      this.customers_list = customersData.customers_request || [];
       this.requested_data = orderData.order_found || null;
 
       if (this.requested_data) {
         this.selectedProduct = this.products_list.find(
           p => p.row_id === this.requested_data.ProductId
+        );
+
+        this.selectedCustomer = this.customers_list.find(
+          p => p.row_id === this.requested_data.CustomerId
         );
       }
 
@@ -88,5 +100,15 @@ export class EditComponent implements OnInit {
     form.form.patchValue({
       totalAmount: quantity * product.Price
     });
+  }
+
+  customerIdChange(customer:any, form:NgForm) {
+    const sel_customer = form.form.value.selectedCustomer;
+    if(!sel_customer) return;
+
+    form.form.patchValue({
+      customerId: customer.row_id,
+      customerName: customer.CustomerName,
+    })
   }
 }

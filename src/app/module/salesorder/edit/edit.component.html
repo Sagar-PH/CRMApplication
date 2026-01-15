@@ -18,16 +18,28 @@
         <div class="form-grid">
 
             <div class="form-group">
+                <input type="text" name="customerId" [(ngModel)]="requested_data.CustomerId" ngModel hidden/>
+
                 <label>Customer Account ID *</label>
-                <input type="text" name="accountId" [(ngModel)]="requested_data.AccountId" required
-                    placeholder="Enter customer account ID" />
+                <select name="selectedCustomer" [(ngModel)]="selectedCustomer" (ngModelChange)="customerIdChange($event, SOEditForm)">
+                    <option *ngFor="let customer of customers_list" [ngValue]="customer">{{customer.row_id}}</option>
+                </select>
+
+                <!-- <input type="text" name="accountId" [(ngModel)]="requested_data.AccountId" required
+                    placeholder="Enter customer account ID" /> -->
             </div>
 
             <div class="form-group">
+                <label>Customer Name *</label>
+                <input type="text" name="customerName" [(ngModel)]="requested_data.CustomerName" required
+                    placeholder="Enter Customer Name" readonly/>
+            </div>
+
+            <!-- <div class="form-group">
                 <label>Contact ID</label>
                 <input type="text" name="contactId" [(ngModel)]="requested_data.ContactId"
                     placeholder="Enter contact ID" />
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label>Order Date</label>
@@ -36,7 +48,7 @@
 
             <div class="form-group">
                 <label>Expected Delivery</label>
-                <input type="date" name="deliveryDate" [(ngModel)]="requested_data.DeliveryDate" />
+                <input type="date" name="deliveryDate" [(ngModel)]="requested_data.ExpectedDelivery" />
             </div>
 
             <div class="form-group">

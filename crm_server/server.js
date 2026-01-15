@@ -194,8 +194,8 @@ express_app.post('/sales_order/create', async (req, res) => {
 
     const sales_order = {
         row_id: sales_row_id,
-        AccountId: req.body['accountId'],
-        ContactId: req.body['contactId'],
+        CustomerId: req.body['customerId'],
+        CustomerName: req.body['customerName'],
         OrderDate: req.body['orderDate'],
         ExpectedDelivery: req.body['deliveryDate'],
         Status: req.body['status'],
@@ -226,8 +226,8 @@ express_app.post('/sales_order/update', async (req, res) => {
     const update_id = { row_id: req.body['orderId'] };
 
     const sale = {
-        AccountId: req.body['accountId'],
-        ContactId: req.body['contactId'],
+        CustomerId: req.body['customerId'],
+        CustomerName: req.body['customerName'],
         OrderDate: req.body['orderDate'],
         ExpectedDelivery: req.body['deliveryDate'],
         Status: req.body['status'],
@@ -305,7 +305,7 @@ express_app.post('/contacts/create', async (req, res) => {
         Mobile: req.body['mobile'],
         Designation: req.body['designation'],
         Department: req.body['department'],
-        AccountId: req.body['accountId'],
+        CustomerId: req.body['customerId'],
         Status: req.body['status']
     };
 
@@ -337,7 +337,7 @@ express_app.post('/contacts/update', async (req, res) => {
         Mobile: req.body['mobile'],
         Designation: req.body['designation'],
         Department: req.body['department'],
-        AccountId: req.body['accountId'],
+        CustomerId: req.body['customerId'],
         Status: req.body['status']
     };
 

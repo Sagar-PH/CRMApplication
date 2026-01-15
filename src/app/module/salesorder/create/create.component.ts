@@ -10,16 +10,29 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class CreateComponent {
   products_list: any
+  customers_list: any
 
-  ngOnInit() {
-    fetch('http://localhost:8080/products/view', {
-      method: 'GET',
-      credentials: 'include'
-    }).then(res => res.json())
-      .then(data => {
-        this.products_list = data['products_request']
-        console.log('product request success', this.products_list)
-      }).catch(err => console.log('products request failed!'))
+  async ngOnInit() {
+    try {
+      const [products, customers] = await Promise.all([
+        fetch('http://localhost:8080/products/view', {
+          method: 'GET',
+          credentials: 'include'
+        }),
+        fetch('http://localhost:8080/customers/view', {
+          method: 'GET',
+          credentials: 'include'
+        })
+      ])
+
+      const products_data = await products.json()
+      const customers_data = await customers.json()
+
+      this.products_list = products_data.products_request || [];
+      this.customers_list = customers_data.customers_request || [];
+    } catch (error) {
+      console.error('Initialization failed:', error);
+    }
   }
 
   SalesOrderSubmit(SOrderForm: any) {
@@ -54,5 +67,12 @@ export class CreateComponent {
         totalAmount: quantity * product_value.Price
       });
     }
+  }
+
+  selectedCustomerChange(customer:any, salesOrderForm: NgForm) {
+    salesOrderForm.form.patchValue({
+      customerId: customer.row_id,
+      customerName: customer.CustomerName
+    })
   }
 }
