@@ -8,7 +8,6 @@ const cors = require('cors')
 const express_app = express()
 
 let user_collection = undefined;
-let user_database = undefined;
 
 express_app.use(session({
     secret: 'your-secret-key',
@@ -35,7 +34,7 @@ express_app.use(async (req, res, next) => {
 
         if (user_found !== null) {
             // console.log('user found:: ', user_found)
-            user_database = client.db(user_found['Database'])
+            req.user_database = client.db(user_found['Database'])
         }
     }
 
@@ -119,11 +118,11 @@ express_app.post('/register', async (req, res) => {
     let insert_status = await hp.insertToCollection(user_collection, user_data)
 
     if (insert_status) {
-        user_database = client.db(user_db);
+        req.user_database = client.db(user_db);
 
         await Promise.all(
             collections.map(name => {
-                const col = user_database.collection(name);
+                const col = req.user_database.collection(name);
                 return col.createIndex({ row_id: 1 }, { unique: true });
             })
         );
@@ -137,7 +136,7 @@ express_app.post('/register', async (req, res) => {
 })
 // ---------------------- PURCHASE ORDERS ----------------------
 express_app.post('/purchase_order/create', async (req, res) => {
-    const p_order_col = user_database.collection('PurchaseOrders');
+    const p_order_col = req.user_database.collection('PurchaseOrders');
     const purchase_row_id = await hp.getNextRowId(p_order_col)
 
     const purchase_order = {
@@ -158,19 +157,19 @@ express_app.post('/purchase_order/create', async (req, res) => {
 });
 
 express_app.get('/purchase_order/view', async (req, res) => {
-    const all_p_orders = await user_database.collection('PurchaseOrders').find().toArray();
+    const all_p_orders = await req.user_database.collection('PurchaseOrders').find().toArray();
     return res.send({ orders_request: all_p_orders });
 });
 
 express_app.get('/purchase_order/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const purchase_collection = user_database.collection('PurchaseOrders');
+    const purchase_collection = req.user_database.collection('PurchaseOrders');
     const result = await hp.findInCollection(purchase_collection, { row_id: Number(id) });
     return res.send({ order_found: result });
 });
 
 express_app.post('/purchase_order/update', async (req, res) => {
-    const purchase_order_collection = user_database.collection('PurchaseOrders');
+    const purchase_order_collection = req.user_database.collection('PurchaseOrders');
     const update_id = { row_id: req.body['orderId'] };
 
     const purchase = {
@@ -191,7 +190,7 @@ express_app.post('/purchase_order/update', async (req, res) => {
 
 // ---------------------- SALES ORDERS ----------------------
 express_app.post('/sales_order/create', async (req, res) => {
-    const s_order_col = user_database.collection('SalesOrders');
+    const s_order_col = req.user_database.collection('SalesOrders');
     const sales_row_id = await hp.getNextRowId(s_order_col)
 
     const sales_order = {
@@ -212,19 +211,19 @@ express_app.post('/sales_order/create', async (req, res) => {
 });
 
 express_app.get('/sales_order/view', async (req, res) => {
-    const all_s_orders = await user_database.collection('SalesOrders').find().toArray();
+    const all_s_orders = await req.user_database.collection('SalesOrders').find().toArray();
     return res.send({ orders_request: all_s_orders });
 });
 
 express_app.get('/sales_order/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const sales_collection = user_database.collection('SalesOrders');
+    const sales_collection = req.user_database.collection('SalesOrders');
     const result = await hp.findInCollection(sales_collection, { row_id: Number(id) });
     return res.send({ order_found: result });
 });
 
 express_app.post('/sales_order/update', async (req, res) => {
-    const sales_order_collection = user_database.collection('SalesOrders');
+    const sales_order_collection = req.user_database.collection('SalesOrders');
     const update_id = { row_id: req.body['orderId'] };
 
     const sale = {
@@ -245,7 +244,7 @@ express_app.post('/sales_order/update', async (req, res) => {
 
 // ---------------------- VENDORS ----------------------
 express_app.post('/vendors/create', async (req, res) => {
-    const vendors_col = user_database.collection('Vendors');
+    const vendors_col = req.user_database.collection('Vendors');
     const vendor_row_id = await hp.getNextRowId(vendors_col)
 
     const vendor = {
@@ -264,19 +263,19 @@ express_app.post('/vendors/create', async (req, res) => {
 });
 
 express_app.get('/vendors/view', async (req, res) => {
-    const all_vendors = await user_database.collection('Vendors').find().toArray();
+    const all_vendors = await req.user_database.collection('Vendors').find().toArray();
     return res.send({ vendors_request: all_vendors });
 });
 
 express_app.get('/vendors/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const vendors_collection = user_database.collection('Vendors');
+    const vendors_collection = req.user_database.collection('Vendors');
     const result = await hp.findInCollection(vendors_collection, { row_id: Number(id) });
     return res.send({ vendor_found: result });
 });
 
 express_app.post('/vendors/update', async (req, res) => {
-    const vendors_collection = user_database.collection('Vendors');
+    const vendors_collection = req.user_database.collection('Vendors');
     const update_id = { row_id: req.body['vendorId'] };
 
     const vendor = {
@@ -295,7 +294,7 @@ express_app.post('/vendors/update', async (req, res) => {
 
 // ---------------------- CONTACTS ----------------------
 express_app.post('/contacts/create', async (req, res) => {
-    const contacts_col = user_database.collection('Contacts');
+    const contacts_col = req.user_database.collection('Contacts');
     const contact_row_id = await hp.getNextRowId(contacts_col)
 
     const contact = {
@@ -316,19 +315,19 @@ express_app.post('/contacts/create', async (req, res) => {
 });
 
 express_app.get('/contacts/view', async (req, res) => {
-    const all_contacts = await user_database.collection('Contacts').find().toArray();
+    const all_contacts = await req.user_database.collection('Contacts').find().toArray();
     return res.send({ contacts_request: all_contacts });
 });
 
 express_app.get('/contacts/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const contacts_collection = user_database.collection('Contacts');
+    const contacts_collection = req.user_database.collection('Contacts');
     const result = await hp.findInCollection(contacts_collection, { row_id: Number(id) });
     return res.send({ contact_found: result });
 });
 
 express_app.post('/contacts/update', async (req, res) => {
-    const contacts_collection = user_database.collection('Contacts');
+    const contacts_collection = req.user_database.collection('Contacts');
     const update_id = { row_id: req.body['contactId'] };
 
     const contact = {
@@ -349,7 +348,7 @@ express_app.post('/contacts/update', async (req, res) => {
 
 // ---------------------- TASKS ----------------------
 express_app.post('/tasks/create', async (req, res) => {
-    const tasks_col = user_database.collection('Tasks');
+    const tasks_col = req.user_database.collection('Tasks');
     const task_row_id = await hp.getNextRowId(tasks_col)
 
     const task = {
@@ -368,19 +367,19 @@ express_app.post('/tasks/create', async (req, res) => {
 });
 
 express_app.get('/tasks/view', async (req, res) => {
-    const all_tasks = await user_database.collection('Tasks').find().toArray();
+    const all_tasks = await req.user_database.collection('Tasks').find().toArray();
     return res.send({ tasks_request: all_tasks });
 });
 
 express_app.get('/tasks/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const tasks_collection = user_database.collection('Tasks');
+    const tasks_collection = req.user_database.collection('Tasks');
     const result = await hp.findInCollection(tasks_collection, { row_id: Number(id) });
     return res.send({ task_found: result });
 });
 
 express_app.post('/tasks/update', async (req, res) => {
-    const task_collection = user_database.collection('Tasks');
+    const task_collection = req.user_database.collection('Tasks');
     const update_id = { row_id: req.body['taskId'] };
 
     const task = {
@@ -398,11 +397,11 @@ express_app.post('/tasks/update', async (req, res) => {
 });
 
 express_app.get('/dashboard', async (req, res) => {
-    const sales = await user_database.collection('SalesOrders').find().toArray();
-    const purchase = await user_database.collection('PurchaseOrders').find().toArray();
-    const tasks = await user_database.collection('Tasks').find().toArray();
-    const contacts = await user_database.collection('Contacts').find().toArray();
-    const vendors = await user_database.collection('Vendors').find().toArray();
+    const sales = await req.user_database.collection('SalesOrders').find().toArray();
+    const purchase = await req.user_database.collection('PurchaseOrders').find().toArray();
+    const tasks = await req.user_database.collection('Tasks').find().toArray();
+    const contacts = await req.user_database.collection('Contacts').find().toArray();
+    const vendors = await req.user_database.collection('Vendors').find().toArray();
 
     return res.send({ 
         sales: sales,
@@ -417,7 +416,7 @@ express_app.get('/dashboard', async (req, res) => {
 //Product page
 express_app.post('/products/create', async (req, res) => {
     try {
-        const product_col = user_database.collection('Products');
+        const product_col = req.user_database.collection('Products');
         const product_row_id = await hp.getNextRowId(product_col);
 
         const product = {
@@ -445,14 +444,14 @@ express_app.post('/products/create', async (req, res) => {
 
 // Get all products
 express_app.get('/products/view', async (req, res) => {
-    const all_products = await user_database.collection('Products').find().toArray();
+    const all_products = await req.user_database.collection('Products').find().toArray();
     return res.send({ products_request: all_products });
 });
 
 // Get single product by row_id
 express_app.get('/products/edit/:id', async (req, res) => {
     try {
-        const product_col = user_database.collection('Products');
+        const product_col = req.user_database.collection('Products');
         const row_id = parseInt(req.params.id, 10);
 
         const product = await product_col.findOne({ row_id });
@@ -466,7 +465,7 @@ express_app.get('/products/edit/:id', async (req, res) => {
 });
 
 express_app.post('/products/update', async (req, res) => {
-    const product_collection = user_database.collection('Products');
+    const product_collection = req.user_database.collection('Products');
     const update_id = { row_id: req.body['productId'] };
 
     const product = {
@@ -487,7 +486,7 @@ express_app.post('/products/update', async (req, res) => {
 
 // ---------------------- Customers ----------------------
 express_app.post('/customers/create', async (req, res) => {
-    const customers_col = user_database.collection('Customers');
+    const customers_col = req.user_database.collection('Customers');
     const customer_row_id = await hp.getNextRowId(customers_col)
 
     const customer = {
@@ -512,19 +511,19 @@ express_app.post('/customers/create', async (req, res) => {
 });
 
 express_app.get('/customers/view', async (req, res) => {
-    const all_customers = await user_database.collection('Customers').find().toArray();
+    const all_customers = await req.user_database.collection('Customers').find().toArray();
     return res.send({ customers_request: all_customers });
 });
 
 express_app.get('/customers/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const customers_collection = user_database.collection('Customers');
+    const customers_collection = req.user_database.collection('Customers');
     const result = await hp.findInCollection(customers_collection, { row_id: Number(id) });
     return res.send({ customer_found: result });
 });
 
 express_app.post('/customers/update', async (req, res) => {
-    const customers_collection = user_database.collection('Customers');
+    const customers_collection = req.user_database.collection('Customers');
     const update_id = { row_id: req.body['customerId'] };
 
     const customer = {
@@ -549,9 +548,14 @@ express_app.post('/customers/update', async (req, res) => {
 
 
 // Sales Analysis
-express_app.get('/analysis/sales', async (req, res) => {
-    await hp.sales_analysis(user_database)
-})
+express_app.get("/analytics/sales-trends", hp.salesTrends);
+express_app.get("/analytics/top-products", hp.topProducts);
+express_app.get("/analytics/sales-vs-purchase", hp.salesVsPurchase);
+
+
+express_app.get("/forecast", hp.salesForecast);
+express_app.get("/inventory-risk", hp.inventoryRisk);
+express_app.get("/reorder-suggestions", hp.reorderSuggestions);
 
 express_app.listen(PORT, async () => {
     user_collection = await hp.connectDB(client)
