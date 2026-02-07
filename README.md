@@ -1,59 +1,125 @@
-# CRMApplication
+<h1 align="center">Customer Relationship Management (CRM) Application</h1>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+<p align="center">
+  A modern CRM system with analytics, reports, and AI-driven insights built using Angular and Node.js.
+</p>
 
-## Development server
+<p align="center">
+  <img src="https://img.shields.io/badge/Angular-17+-DD0031?style=for-the-badge&logo=angular&logoColor=white" />
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
+  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white" />
+</p>
 
-To start a local development server, run:
+<hr />
 
-```bash
-ng serve
-```
+<h2>📌 Project Overview</h2>
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+<p>
+This CRM application helps businesses manage customers, sales data, and performance metrics.
+It goes beyond basic CRUD by providing <strong>analytics dashboards</strong>, 
+<strong>sales forecasts</strong>, and a <strong>chatbot-based insights engine</strong>.
+</p>
 
-## Code scaffolding
+<hr />
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+<h2>✨ Key Features</h2>
 
-```bash
-ng generate component component-name
-```
+<ul>
+  <li>Customer & vendor management</li>
+  <li>Sales tracking and performance analytics</li>
+  <li>Interactive dashboards using Chart.js</li>
+  <li>Sales trend analysis and forecasting</li>
+  <li>Reorder level suggestions</li>
+  <li>AI-style chatbot for business insights (backend-driven)</li>
+  <li>Session-based authentication</li>
+</ul>
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+<hr />
 
-```bash
-ng generate --help
-```
+<h2>🛠 Tech Stack</h2>
 
-## Building
+<ul>
+  <li><strong>Frontend:</strong> Angular</li>
+  <li><strong>Backend:</strong> Node.js, Express.js</li>
+  <li><strong>Database:</strong> MongoDB</li>
+  <li><strong>Charts & Analytics:</strong> Chart.js</li>
+  <li><strong>AI Layer:</strong> Rule-based + LLM-ready chatbot insights engine</li>
+</ul>
 
-To build the project run:
+<hr />
 
-```bash
-ng build
-```
+<h2>📦 Project Setup</h2>
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+<p>You can run this <strong>CRM Application</strong> locally using the steps below:</p>
 
-## Running unit tests
+<h3>1️⃣ Clone the Repository</h3>
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+<pre><code>git clone https://github.com/Sagar-PH/CRMApplication
+cd CRMApplication</code></pre>
 
-```bash
-ng test
-```
+<h3>2️⃣ Backend and Frontend Setup</h3>
 
-## Running end-to-end tests
+<pre><code>cd crm_server
+npm install
+npm run start</code></pre>
 
-For end-to-end (e2e) testing, run:
+<ul>
+  <li>Above code will start both frontend and backend</li>
+  <li>The backend server will start on <code>http://localhost:3000</code></li>
+  <li>The frontend angular application will run on <code>http://localhost:4200</code></li>
+</ul>
 
-```bash
-ng e2e
-```
+<hr />
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+<h2>🤖 AI Reports & Insights Engine</h2>
 
-## Additional Resources
+<p>
+The CRM includes a chatbot-based analytics engine that allows users to ask questions like:
+</p>
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+<ul>
+  <li><em>"Why did sales drop last month?"</em></li>
+  <li><em>"Show sales forecast for next month"</em></li>
+  <li><em>"Which products need reordering?"</em></li>
+</ul>
+
+<p>
+The engine combines:
+</p>
+
+<ul>
+  <li>Intent detection</li>
+  <li>Business reports generation</li>
+  <li>Human-readable insights</li>
+</ul>
+
+<p>
+(Currently powered by hardcoded responses and mock data, with support for future LLM integration.)
+</p>
+
+<hr />
+
+<h2>📸 Demo Screenshot</h2>
+
+<p align="center">
+  <img src="https://sagar-ph.github.io/Images/CRM-Project.png" width="700" />
+</p>
+
+<hr />
+
+<h2>🚀 Future Enhancements</h2>
+
+<ul>
+  <li>Role-based access control</li>
+  <li>Exportable reports (PDF / Excel)</li>
+  <li>Real-time notifications and alerts</li>
+  <li>LLM-powered insights and recommendations</li>
+</ul>
+
+<hr />
+
+<p align="center">
+  Built with ❤️ by <strong>Sagar</strong>
+</p>
