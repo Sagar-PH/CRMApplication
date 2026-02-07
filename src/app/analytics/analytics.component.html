@@ -1,0 +1,243 @@
+<div class="analytics-container">
+
+    <!-- HEADER -->
+    <header class="analytics-header">
+        <div>
+            <h1>Analytics & Reports</h1>
+            <p>Sales performance, inventory insights, and forecasts</p>
+        </div>
+
+        <div class="filters">
+            <label>Period:</label>
+            <select [(ngModel)]="months" (change)="loadReports()">
+                <option value="1">Last 1 Month</option>
+                <option value="3">Last 3 Months</option>
+                <option value="6">Last 6 Months</option>
+                <option value="12">Last 12 Months</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- KPI GRID -->
+    <section class="kpi-grid">
+        <!-- <div class="kpi-card">
+            <span>Total Revenue</span>
+            <h2>₹ {{ kpis.totalRevenue | number }}</h2>
+            <small [class.up]="kpis.revenueTrend === 'Rising'" [class.down]="kpis.revenueTrend === 'Falling'">
+                {{ kpis.revenueTrend }}
+            </small>
+        </div>
+
+        <div class="kpi-card">
+            <span>Total Units Sold</span>
+            <h2>{{ kpis.totalUnits }}</h2>
+            <small [class.up]="kpis.unitsTrend === 'Rising'" [class.down]="kpis.unitsTrend === 'Falling'">
+                {{ kpis.unitsTrend }}
+            </small>
+        </div>
+
+        <div class="kpi-card">
+            <span>Top Product</span>
+            <h2>{{ kpis.topProduct.name }}</h2>
+            <small>₹ {{ kpis.topProduct.revenue | number }} ({{ kpis.topProduct.contribution }}%)</small>
+        </div> -->
+
+        <div class="kpi-card">
+            <span>Inventory Risk</span>
+            <h2>{{ kpis.riskCount }}</h2>
+            <small>High: {{ kpis.inventoryRisk.high }}, Medium: {{ kpis.inventoryRisk.medium }}, Low: {{
+                kpis.inventoryRisk.low }}</small>
+        </div>
+
+        <div class="kpi-card">
+            <span>Forecast Revenue</span>
+            <h2>₹ {{ kpis.forecastRevenue | number }}</h2>
+            <small>Confidence: {{ kpis.forecastConfidence }}</small>
+        </div>
+
+        <div class="kpi-card">
+            <span>Reorder Suggestions</span>
+            <h2>{{ kpis.reorderCount }}</h2>
+            <small>Products to reorder</small>
+        </div>
+    </section>
+
+    <!-- CHARTS GRID -->
+    <!-- <section class="report-grid">
+        <div class="report-card">
+            <h3>Sales Trends</h3>
+            <canvas id="salesTrendChart"></canvas>
+        </div>
+
+        <div class="report-card">
+            <h3>Top Products</h3>
+            <canvas id="topProductsChart"></canvas>
+        </div>
+
+        <div class="report-card">
+            <h3>Sales vs Purchase</h3>
+            <canvas id="salesVsPurchaseChart"></canvas>
+        </div>
+
+        <div class="report-card">
+            <h3>Forecast Revenue</h3>
+            <canvas id="forecastChart"></canvas>
+        </div>
+    </section> -->
+    <br>
+
+    <!-- DATA TABLES -->
+    <section class="data-section">
+
+        <!-- SALES TABLE -->
+        <div class="data-card">
+            <div class="data-header">
+                <h3>Sales Performance</h3>
+                <span class="tag-line">Product-wise sales summary</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Units Sold</th>
+                        <th>Revenue</th>
+                        <th>Revenue Growth %</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of salesTable">
+                        <td>{{ row.productName }}</td>
+                        <td>{{ row.units_sold }}</td>
+                        <td>₹ {{ row.revenue | number }}</td>
+                        <td>{{ row.revenue_growth }}%</td>
+                        <td>
+                            <span class="tag" [class.up]="row.trend === 'Rising'" [class.down]="row.trend === 'Falling'"
+                                [class.stable]="row.trend === 'Stable'">
+                                {{ row.trend }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PURCHASE TABLE -->
+        <div class="data-card">
+            <div class="data-header">
+                <h3>Purchase Summary</h3>
+                <span class="tag-line">Procurement vs sales</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Purchased Units</th>
+                        <th>Sold Units</th>
+                        <th>Stock Balance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of purchaseTable">
+                        <td>{{ row.productName }}</td>
+                        <td>{{ row.purchased }}</td>
+                        <td>{{ row.sold }}</td>
+                        <td>{{ row.balance }}</td>
+                        <td>
+                            <span class="tag" [class.danger]="row.balance < row.reorderLevel"
+                                [class.safe]="row.balance >= row.reorderLevel">
+                                {{ row.balance < row.reorderLevel ? 'At Risk' : 'Healthy' }} </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- INVENTORY RISK TABLE -->
+        <div class="data-card">
+            <div class="data-header">
+                <h3>Inventory Risk</h3>
+                <span class="tag-line">Stock status for all products</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Purchased</th>
+                        <th>Sold</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of inventoryRiskProducts">
+                        <td>{{ row.product_name }}</td>
+                        <td>{{ row.purchased_units }}</td>
+                        <td>{{ row.sold_units }}</td>
+                        <td>{{ row.current_stock }}</td>
+                        <td>
+                            <span class="tag" [class.danger]="row.inventory_status === 'Stockout Risk'"
+                                [class.warning]="row.inventory_status === 'Stable'"
+                                [class.safe]="row.inventory_status === 'Overstock Risk'">
+                                {{ row.inventory_status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FORECAST TABLE -->
+        <div class="data-card">
+            <div class="data-header">
+                <h3>Sales Forecast</h3>
+                <span class="tag-line">Projected revenue for upcoming months</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Forecast Revenue</th>
+                        <th>Months Used</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of forecastTable">
+                        <td>{{ row.productName }}</td>
+                        <td>₹ {{ row.forecast_revenue }}</td>
+                        <td>{{ row.months_used }}</td>
+                        <td>{{ row.confidence }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- REORDER TABLE -->
+        <div class="data-card">
+            <div class="data-header">
+                <h3>Reorder Suggestions</h3>
+                <span>Products recommended for reorder</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Recommended Qty</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of reorderTable">
+                        <td>{{ row.productName }}</td>
+                        <td>{{ row.recommended_qty }}</td>
+                        <td>{{ row.reason }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</div>

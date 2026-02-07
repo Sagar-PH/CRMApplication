@@ -6,6 +6,7 @@ import { DashboardAuthGuard } from './shared/dashboard.auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AccountRedirectGuard } from './shared/account.auth.guard';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +20,10 @@ export const routes: Routes = [
                 path: 'dashboard',
                 component: DashboardComponent,
                 canActivate: [DashboardAuthGuard]
+            },
+            {
+                path: 'analytics',
+                component: AnalyticsComponent
             },
             {
                 path: 'salesorder',
