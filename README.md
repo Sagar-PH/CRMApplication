@@ -104,7 +104,11 @@ The engine combines:
 <h2>📸 Demo Screenshot</h2>
 
 <p align="center">
+  <h3>Dashboard</h3>
   <img src="https://sagar-ph.github.io/Images/CRM-Project.png" width="700" />
+
+  <h3>Analytics and Reports</h3>
+  <img src="https://sagar-ph.github.io/Images/CRM-Project-2.png" width="700" />
 </p>
 
 <hr />
