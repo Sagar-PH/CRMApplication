@@ -10,6 +10,7 @@
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
   <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" />
   <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </p>
 
 <hr />
@@ -44,6 +45,7 @@ It goes beyond basic CRUD by providing <strong>analytics dashboards</strong>,
   <li><strong>Frontend:</strong> Angular</li>
   <li><strong>Backend:</strong> Node.js, Express.js</li>
   <li><strong>Database:</strong> MongoDB</li>
+  <li><strong>Tools:</strong> Docker</li>
   <li><strong>Charts & Analytics:</strong> Chart.js</li>
   <li><strong>AI Layer:</strong> Rule-based + LLM-ready chatbot insights engine</li>
 </ul>
@@ -54,10 +56,20 @@ It goes beyond basic CRUD by providing <strong>analytics dashboards</strong>,
 
 <p>You can run this <strong>CRM Application</strong> locally using the steps below:</p>
 
-<h3>1️⃣ Clone the Repository</h3>
+<h3>Clone the Repository</h3>
 
 <pre><code>git clone https://github.com/Sagar-PH/CRMApplication
 cd CRMApplication</code></pre>
+
+<h3>1️⃣ Build With Docker Compose (Should have docker installed)</h3>
+
+<pre><code>cd CRMApplication
+docker-compose up --build
+</code></pre>
+
+<ul>
+  <li>Application starts running...</li>
+</ul>
 
 <h3>2️⃣ Backend and Frontend Setup</h3>
 
