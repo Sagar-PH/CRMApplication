@@ -1,4 +1,30 @@
+const jwt = require('jsonwebtoken');
+
 class DBHelper {
+    static generateToken(user, type) {
+        return jwt.sign(
+            { id: user.username, ttype: type },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
+    }
+
+    static authMiddleware = (req, res, next) => {
+        next()
+        
+        // const auth_token = req.headers.authorization
+        // if (!auth_token) res.status(401).json({ message: "no token" })
+    
+        // try {
+        //     const bearer_token = auth_token.split(' ')[1];
+        //     const token_payload = jwt.verify(bearer_token, process.env.JWT_SECRET);
+        //     req.user = token_payload
+    
+        //     next()
+        // } catch {
+        //     res.status(401).json({ message: 'Unauthorized'})
+        // }
+    }
 
     static async connectDB(client) {
         try {

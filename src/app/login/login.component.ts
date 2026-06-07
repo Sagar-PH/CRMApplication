@@ -36,6 +36,8 @@ export class LoginComponent {
       .then(res => res.json())
       .then(data => {
         if (['Success', 'Redirect'].includes(data.status)) {
+          console.log("Login Response:: ", data);
+          this.authService.setToken(data.token);
           this.authService.setLoggedIn(true);
           this.router.navigateByUrl('/dashboard');
         } else {

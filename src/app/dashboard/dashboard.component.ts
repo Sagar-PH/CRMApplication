@@ -14,6 +14,7 @@ import {
   Filler
 } from 'chart.js';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 Chart.register(
   LineController,
@@ -36,6 +37,11 @@ Chart.register(
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
+
+  constructor(
+    private authService: AuthService
+  ) {}
+
   Math = Math
 
   total_revenue = 0;
@@ -75,8 +81,14 @@ export class DashboardComponent implements OnInit {
   }
 
   loadDatabaseAndCharts() {
+    const auth_token = this.authService.getToken();
+    console.log("Auth Token:: ", auth_token)
+    
     fetch('http://localhost:8080/dashboard', {
       method: 'GET',
+      headers: {
+        Authorization: `Bearer ${auth_token}`
+      },
       credentials: 'include'
     }).then(res => res.json())
       .then(data => {

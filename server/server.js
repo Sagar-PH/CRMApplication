@@ -1,12 +1,12 @@
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require("cookie-parser");
+const cors = require('cors');
 const hp = require("./db_helper");
-
-const express = require('express')
-const session = require('express-session')
+const express_app = express();
+require('dotenv').config()
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const cors = require('cors')
-const express_app = express()
-
 let user_collection = undefined;
 
 express_app.use(session({
@@ -23,7 +23,7 @@ express_app.use(cors({
 
 express_app.use(express.json());
 express_app.use(express.urlencoded({ extended: true }));
-
+express_app.use(cookieParser())
 
 express_app.use(async (req, res, next) => {
     // console.log('Session ID:', req.session.user);
@@ -67,12 +67,35 @@ express_app.post('/login', async (req, res) => {
     })
 
     if (user_found) {
+        const access_token = hp.generateToken(req.body, 'access')
+        const refresh_token = hp.generateToken(req.body, 'refresh')
+
+        res.cookie('token', refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: process.env.JWT_EXPIRES_IN
+        });
+
         req.session.user = { username: req.body['username'] }
-        return res.send({ type: 'login', status: "Success" })
+        return res.send({ type: 'login', status: "Success", token: access_token })
     }
 
     return res.send({ type: 'login', status: "User not Exist" })
+})
 
+express_app.post('/refresh', (req, res) => {
+    const refresh_token = req.cookies.token;
+    if (!refresh_token) res.status(401).json({ message: 'no refresh token' })
+
+    try {
+        const refresh_validate = jwt.verify(refresh_token, process.env.JWT_SECRET)
+        const new_access_token = generateToken(refresh_validate, 'access')
+
+        res.status(201).json({ message: 'Access Token Success', token: new_access_token})
+    } catch {
+        res.status(401).json({ message: 'Token is invalid Refresh Again.' })
+    }
 })
 
 express_app.post("/logout", (req, res) => {
@@ -80,6 +103,12 @@ express_app.post("/logout", (req, res) => {
     if (!hp.isAuthenticated(req)) {
         res.json({ type: 'logout', status: "no User" });
     }
+
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    })
 
     req.session.destroy(err => {
         if (err) {
@@ -135,7 +164,7 @@ express_app.post('/register', async (req, res) => {
 
 })
 // ---------------------- PURCHASE ORDERS ----------------------
-express_app.post('/purchase_order/create', async (req, res) => {
+express_app.post('/purchase_order/create', hp.authMiddleware, async (req, res) => {
     const p_order_col = req.user_database.collection('PurchaseOrders');
     const purchase_row_id = await hp.getNextRowId(p_order_col)
 
@@ -156,19 +185,19 @@ express_app.post('/purchase_order/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/purchase_order/view', async (req, res) => {
+express_app.get('/purchase_order/view', hp.authMiddleware, async (req, res) => {
     const all_p_orders = await req.user_database.collection('PurchaseOrders').find().toArray();
     return res.send({ orders_request: all_p_orders });
 });
 
-express_app.get('/purchase_order/edit/:id', async (req, res) => {
+express_app.get('/purchase_order/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const purchase_collection = req.user_database.collection('PurchaseOrders');
     const result = await hp.findInCollection(purchase_collection, { row_id: Number(id) });
     return res.send({ order_found: result });
 });
 
-express_app.post('/purchase_order/update', async (req, res) => {
+express_app.post('/purchase_order/update', hp.authMiddleware, async (req, res) => {
     const purchase_order_collection = req.user_database.collection('PurchaseOrders');
     const update_id = { row_id: req.body['orderId'] };
 
@@ -189,7 +218,7 @@ express_app.post('/purchase_order/update', async (req, res) => {
 });
 
 // ---------------------- SALES ORDERS ----------------------
-express_app.post('/sales_order/create', async (req, res) => {
+express_app.post('/sales_order/create', hp.authMiddleware, async (req, res) => {
     const s_order_col = req.user_database.collection('SalesOrders');
     const sales_row_id = await hp.getNextRowId(s_order_col)
 
@@ -210,19 +239,19 @@ express_app.post('/sales_order/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/sales_order/view', async (req, res) => {
+express_app.get('/sales_order/view', hp.authMiddleware, async (req, res) => {
     const all_s_orders = await req.user_database.collection('SalesOrders').find().toArray();
     return res.send({ orders_request: all_s_orders });
 });
 
-express_app.get('/sales_order/edit/:id', async (req, res) => {
+express_app.get('/sales_order/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const sales_collection = req.user_database.collection('SalesOrders');
     const result = await hp.findInCollection(sales_collection, { row_id: Number(id) });
     return res.send({ order_found: result });
 });
 
-express_app.post('/sales_order/update', async (req, res) => {
+express_app.post('/sales_order/update', hp.authMiddleware, async (req, res) => {
     const sales_order_collection = req.user_database.collection('SalesOrders');
     const update_id = { row_id: req.body['orderId'] };
 
@@ -243,7 +272,7 @@ express_app.post('/sales_order/update', async (req, res) => {
 });
 
 // ---------------------- VENDORS ----------------------
-express_app.post('/vendors/create', async (req, res) => {
+express_app.post('/vendors/create', hp.authMiddleware, async (req, res) => {
     const vendors_col = req.user_database.collection('Vendors');
     const vendor_row_id = await hp.getNextRowId(vendors_col)
 
@@ -262,19 +291,19 @@ express_app.post('/vendors/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/vendors/view', async (req, res) => {
+express_app.get('/vendors/view', hp.authMiddleware, async (req, res) => {
     const all_vendors = await req.user_database.collection('Vendors').find().toArray();
     return res.send({ vendors_request: all_vendors });
 });
 
-express_app.get('/vendors/edit/:id', async (req, res) => {
+express_app.get('/vendors/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const vendors_collection = req.user_database.collection('Vendors');
     const result = await hp.findInCollection(vendors_collection, { row_id: Number(id) });
     return res.send({ vendor_found: result });
 });
 
-express_app.post('/vendors/update', async (req, res) => {
+express_app.post('/vendors/update', hp.authMiddleware, async (req, res) => {
     const vendors_collection = req.user_database.collection('Vendors');
     const update_id = { row_id: req.body['vendorId'] };
 
@@ -293,7 +322,7 @@ express_app.post('/vendors/update', async (req, res) => {
 });
 
 // ---------------------- CONTACTS ----------------------
-express_app.post('/contacts/create', async (req, res) => {
+express_app.post('/contacts/create', hp.authMiddleware, async (req, res) => {
     const contacts_col = req.user_database.collection('Contacts');
     const contact_row_id = await hp.getNextRowId(contacts_col)
 
@@ -314,19 +343,19 @@ express_app.post('/contacts/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/contacts/view', async (req, res) => {
+express_app.get('/contacts/view', hp.authMiddleware, async (req, res) => {
     const all_contacts = await req.user_database.collection('Contacts').find().toArray();
     return res.send({ contacts_request: all_contacts });
 });
 
-express_app.get('/contacts/edit/:id', async (req, res) => {
+express_app.get('/contacts/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const contacts_collection = req.user_database.collection('Contacts');
     const result = await hp.findInCollection(contacts_collection, { row_id: Number(id) });
     return res.send({ contact_found: result });
 });
 
-express_app.post('/contacts/update', async (req, res) => {
+express_app.post('/contacts/update', hp.authMiddleware, async (req, res) => {
     const contacts_collection = req.user_database.collection('Contacts');
     const update_id = { row_id: req.body['contactId'] };
 
@@ -347,7 +376,7 @@ express_app.post('/contacts/update', async (req, res) => {
 });
 
 // ---------------------- TASKS ----------------------
-express_app.post('/tasks/create', async (req, res) => {
+express_app.post('/tasks/create', hp.authMiddleware, async (req, res) => {
     const tasks_col = req.user_database.collection('Tasks');
     const task_row_id = await hp.getNextRowId(tasks_col)
 
@@ -366,19 +395,19 @@ express_app.post('/tasks/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/tasks/view', async (req, res) => {
+express_app.get('/tasks/view', hp.authMiddleware, async (req, res) => {
     const all_tasks = await req.user_database.collection('Tasks').find().toArray();
     return res.send({ tasks_request: all_tasks });
 });
 
-express_app.get('/tasks/edit/:id', async (req, res) => {
+express_app.get('/tasks/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const tasks_collection = req.user_database.collection('Tasks');
     const result = await hp.findInCollection(tasks_collection, { row_id: Number(id) });
     return res.send({ task_found: result });
 });
 
-express_app.post('/tasks/update', async (req, res) => {
+express_app.post('/tasks/update', hp.authMiddleware, async (req, res) => {
     const task_collection = req.user_database.collection('Tasks');
     const update_id = { row_id: req.body['taskId'] };
 
@@ -396,7 +425,7 @@ express_app.post('/tasks/update', async (req, res) => {
     return res.send({ task_update: 'success' });
 });
 
-express_app.get('/dashboard', async (req, res) => {
+express_app.get('/dashboard', hp.authMiddleware, async (req, res) => {
     const sales = await req.user_database.collection('SalesOrders').find().toArray();
     const purchase = await req.user_database.collection('PurchaseOrders').find().toArray();
     const tasks = await req.user_database.collection('Tasks').find().toArray();
@@ -414,7 +443,7 @@ express_app.get('/dashboard', async (req, res) => {
 
 
 //Product page
-express_app.post('/products/create', async (req, res) => {
+express_app.post('/products/create', hp.authMiddleware, async (req, res) => {
     try {
         const product_col = req.user_database.collection('Products');
         const product_row_id = await hp.getNextRowId(product_col);
@@ -443,13 +472,13 @@ express_app.post('/products/create', async (req, res) => {
 });
 
 // Get all products
-express_app.get('/products/view', async (req, res) => {
+express_app.get('/products/view', hp.authMiddleware, async (req, res) => {
     const all_products = await req.user_database.collection('Products').find().toArray();
     return res.send({ products_request: all_products });
 });
 
 // Get single product by row_id
-express_app.get('/products/edit/:id', async (req, res) => {
+express_app.get('/products/edit/:id', hp.authMiddleware, async (req, res) => {
     try {
         const product_col = req.user_database.collection('Products');
         const row_id = parseInt(req.params.id, 10);
@@ -464,7 +493,7 @@ express_app.get('/products/edit/:id', async (req, res) => {
     }
 });
 
-express_app.post('/products/update', async (req, res) => {
+express_app.post('/products/update', hp.authMiddleware, async (req, res) => {
     const product_collection = req.user_database.collection('Products');
     const update_id = { row_id: req.body['productId'] };
 
@@ -485,7 +514,7 @@ express_app.post('/products/update', async (req, res) => {
 });
 
 // ---------------------- Customers ----------------------
-express_app.post('/customers/create', async (req, res) => {
+express_app.post('/customers/create', hp.authMiddleware, async (req, res) => {
     const customers_col = req.user_database.collection('Customers');
     const customer_row_id = await hp.getNextRowId(customers_col)
 
@@ -510,19 +539,19 @@ express_app.post('/customers/create', async (req, res) => {
     return res.send({ status: insert_status ? 'inserted' : 'insert failed' });
 });
 
-express_app.get('/customers/view', async (req, res) => {
+express_app.get('/customers/view', hp.authMiddleware, async (req, res) => {
     const all_customers = await req.user_database.collection('Customers').find().toArray();
     return res.send({ customers_request: all_customers });
 });
 
-express_app.get('/customers/edit/:id', async (req, res) => {
+express_app.get('/customers/edit/:id', hp.authMiddleware, async (req, res) => {
     const { id } = req.params;
     const customers_collection = req.user_database.collection('Customers');
     const result = await hp.findInCollection(customers_collection, { row_id: Number(id) });
     return res.send({ customer_found: result });
 });
 
-express_app.post('/customers/update', async (req, res) => {
+express_app.post('/customers/update', hp.authMiddleware, async (req, res) => {
     const customers_collection = req.user_database.collection('Customers');
     const update_id = { row_id: req.body['customerId'] };
 
@@ -548,15 +577,15 @@ express_app.post('/customers/update', async (req, res) => {
 
 
 // Sales Analysis
-express_app.get("/analytics/sales-trends", hp.salesTrends);
-express_app.get("/analytics/purchases-trends", hp.purchaseTrends);
-express_app.get("/analytics/top-products", hp.topProducts);
-express_app.get("/analytics/sales-vs-purchase", hp.salesVsPurchase);
+express_app.get("/analytics/sales-trends", hp.authMiddleware, hp.salesTrends);
+express_app.get("/analytics/purchases-trends", hp.authMiddleware, hp.purchaseTrends);
+express_app.get("/analytics/top-products", hp.authMiddleware, hp.topProducts);
+express_app.get("/analytics/sales-vs-purchase", hp.authMiddleware, hp.salesVsPurchase);
 
 
-express_app.get("/forecast", hp.salesForecast);
-express_app.get("/inventory-risk", hp.inventoryRisk);
-express_app.get("/reorder-suggestions", hp.reorderSuggestions);
+express_app.get("/forecast", hp.authMiddleware, hp.salesForecast);
+express_app.get("/inventory-risk", hp.authMiddleware, hp.inventoryRisk);
+express_app.get("/reorder-suggestions", hp.authMiddleware, hp.reorderSuggestions);
 
 express_app.listen(PORT, async () => {
     user_collection = await hp.connectDB(client)

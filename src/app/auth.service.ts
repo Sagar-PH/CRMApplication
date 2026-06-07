@@ -11,6 +11,9 @@ export class AuthService {
   private isloading = new BehaviorSubject<boolean>(true);
   public load_observer = this.isloading.asObservable();
 
+  private token = new BehaviorSubject<string | null>(null);
+  public token_observer = this.token.asObservable();
+
   initAuth() {
     fetch('http://localhost:8080/auth/check', {
       credentials: 'include'
@@ -35,5 +38,13 @@ export class AuthService {
 
   getLoadingState(): boolean {
     return this.isloading.value;
+  }
+
+  setToken(access_token: string) {
+    this.token.next(access_token);
+  }
+
+  getToken(): string | null {
+    return this.token.value
   }
 }
