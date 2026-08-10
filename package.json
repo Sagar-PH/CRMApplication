@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:CRMApplication": "node dist/crmapplication/server/server.mjs"
+    "serve:ssr:CRMApplication": "node dist/crmapplication/server/server.mjs",
+    "server-start": "node CRMServer/server.js",
+    "server-dev": "nodemon CRMServer/server.js",
+    "server-lint": "eslint CRMServer/**/*.js"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +34,16 @@
     "mongodb": "^6.21.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.15.0",
+    "bcryptjs": "^2.4.3",
+    "express-rate-limit": "^7.3.1",
+    "google-auth-library": "^9.11.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "morgan": "^1.10.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.19",
@@ -46,6 +58,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "nodemon": "^3.1.4"
   }
 }
